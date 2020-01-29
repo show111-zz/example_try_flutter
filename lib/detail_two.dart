@@ -1,20 +1,19 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/util/slide_left_route.dart';
 
 
 void main() {
   // debugPaintSizeEnabled = true;
-  runApp(DetailTwoDialog());
+  runApp(DetailTwoPage());
 }
 
-class DetailTwoDialog extends StatefulWidget {
+class DetailTwoPage extends StatefulWidget {
   @override
-  _DetailOneDialogState createState() => _DetailOneDialogState();
+  _DetailTwoPageState createState() => _DetailTwoPageState();
 }
 
-class _DetailOneDialogState extends State<DetailTwoDialog> {
+class _DetailTwoPageState extends State<DetailTwoPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -22,8 +21,13 @@ class _DetailOneDialogState extends State<DetailTwoDialog> {
     return MaterialApp(
       home: Scaffold(
           key: _scaffoldKey,
-          appBar: AppBar(title: const Text('Persistent bottom sheet')),
-          body: Align(alignment: Alignment.bottomLeft, child: Container(
+          appBar: AppBar(title: ListTile(
+            title: Text('AK, United Stated'),
+            subtitle: Text('100km NE of Cape Yakataga'),
+            leading: Icon(Icons.arrow_back_ios, color: Colors.white,),
+          ) ),
+          body: Align(alignment: Alignment.bottomLeft,
+              child: Container(
               child: _showBottomSheet(context),
 //              width: MediaQuery.of(context).size.width,
           ))),
@@ -31,27 +35,27 @@ class _DetailOneDialogState extends State<DetailTwoDialog> {
   }
 }
 
-Container _showBottomSheet(BuildContext context) {
-  return Container(
-    height: 450,
-    decoration: BoxDecoration(
-        border: Border(top: BorderSide(color: Colors.grey)),
-        color: Colors.greenAccent),
-    child: Column(
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _titleSection(),
-              _toggleButton(),
-              _buttonSection(context),
-            ],
-          ),
-        ),
+Widget _showBottomSheet(BuildContext context) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        _image(),
+        _titleSection(),
+        _toggleButton(),
+        _buttonSection(context),
       ],
-    ),
+  );
+}
+
+Widget _image(){
+  return Container(
+    child:
+      new Image.network('https://gw.alicdn.com/tfs/TB1CgtkJeuSBuNjy1XcXXcYjFXa-906-520.png',
+        fit: BoxFit.fitWidth,
+        width: 420,
+        height: 200,
+      ),
   );
 }
 
@@ -77,16 +81,7 @@ Widget _buttonSection(BuildContext context){
        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
        children: [
          _buildListColumn(Colors.orange),
-         new Container(
-           child: new GestureDetector(
-             child: _buildListColumn(Colors.blueGrey),
-             onTap: (){
-//          Navigator.of(context).pushNamed('/a');
-//          Navigator.push(context, MaterialPageRoute(builder: (context) => DetailOnePage(), maintainState: false));
-//               Navigator.push(context, SlideRightRoute(page: MyApp()));
-             },
-           ),
-         ),
+         _buildListColumn(Colors.blueGrey),
          new Divider(),
        ],
      ),
@@ -140,11 +135,6 @@ Column _buildListColumn(Color colors) {
            alignment: Alignment.topLeft,
            child: Text('Rel. to Historical Seismicity', style: TextStyle(color: Colors.grey[500], fontSize:14.0)),
          ),
-//      new Image.network('https://gw.alicdn.com/tfs/TB1CgtkJeuSBuNjy1XcXXcYjFXa-906-520.png',
-//        fit: BoxFit.fitWidth,
-//        width: 420,
-//        height: 60.0,
-//      ),
       Container(
         color: Colors.grey,
         height: 50.0,
