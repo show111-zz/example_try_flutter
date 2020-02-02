@@ -4,14 +4,10 @@ import 'package:flutter_app/util/slide_left_route.dart';
 
 import 'detail_one.dart';
 
-
 void main() {
   runApp(new MaterialApp(
     theme: new ThemeData(primaryColor: Colors.blue),
     home: new ListApp(),
-//    routes: <String, WidgetBuilder>{
-//      '/a': (BuildContext context) => new DetailOnePage(),
-//    },
   ));
 }
 

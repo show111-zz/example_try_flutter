@@ -5,10 +5,6 @@ import 'package:flutter_app/util/slide_left_route.dart';
 
 import 'detail_two.dart';
 
-void main() {
-  runApp(DetailOneDialog());
-}
-
 class DetailOneDialog extends StatefulWidget {
   @override
   _DetailOneDialogState createState() => _DetailOneDialogState();
@@ -22,15 +18,12 @@ class _DetailOneDialogState extends State<DetailOneDialog> {
     return MaterialApp(
       home: Scaffold(
           key: _scaffoldKey,
-          appBar: AppBar(title: const Text('Persistent bottom sheet')),
+          appBar: AppBar(title: const Text('Detail Page One'), leading: Icon(Icons.arrow_back_ios, color:  Colors.white)),
           body: Align(
               alignment: Alignment.topLeft,
               child: Container(
                 child: _showBottomSheet(context),
               ))),
-      routes: <String, WidgetBuilder>{
-          '/b': (BuildContext context) => new DetailTwoPage(),
-      },
     );
   }
 }
@@ -42,6 +35,7 @@ Container _showBottomSheet(BuildContext context) {
         _image(),
         _titleSection(),
         _titleEvent(context),
+        Divider(),
         _buttonSection()
       ],
     ),
@@ -50,12 +44,14 @@ Container _showBottomSheet(BuildContext context) {
 
 Widget _image() {
   return Container(
-    child: new Image.network(
-      'https://gw.alicdn.com/tfs/TB1CgtkJeuSBuNjy1XcXXcYjFXa-906-520.png',
-      fit: BoxFit.fitWidth,
-      width: 420,
-      height: 200,
-    ),
+//    child: new Image.network(
+//      'https://gw.alicdn.com/tfs/TB1CgtkJeuSBuNjy1XcXXcYjFXa-906-520.png',
+//      fit: BoxFit.fitWidth,
+//      width: 420,
+//      height: 200,
+//    ),
+    height: 160,
+    color: Colors.grey[350],
   );
 }
 
@@ -71,8 +67,7 @@ Widget _titleEvent(BuildContext context) {
              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
            ),
            onTap: (){
-             Navigator.of(context).pushNamed('/b');
-//             Navigator.push(context, SlideRightRoute(page: DetailTwoPage()));
+             Navigator.push(context, SlideRightRoute(page: DetailTwoPage()));
            },
          ),
        ],
@@ -89,23 +84,23 @@ Widget _titleSection() {
       children: [
         Text(
           'Oeschinen Lake Campground',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0, height:  1.5),
         ),
         Text(
           'Kandersteg, Switzerland',
-          style: TextStyle(color: Colors.grey[500], fontSize: 12.0),
+          style: TextStyle(color: Colors.grey[500], fontSize: 12.0, height:  1.5),
         ),
         Text(
           'Minimum Depth: 12km    Maximum Depth: 52km',
-          style: TextStyle(color: Colors.grey[500], fontSize: 8.0),
+          style: TextStyle(color: Colors.grey[500], fontSize: 8.0, height: 2.0),
         ),
         Text(
           'Minimum Depth: 12km ',
-          style: TextStyle(color: Colors.grey[500], fontSize: 8.0),
+          style: TextStyle(color: Colors.grey[500], fontSize: 8.0, height: 2.0),
         ),
         Text(
           'Analysis Type: AI Analysis',
-          style: TextStyle(color: Colors.grey[500], fontSize: 8.0),
+          style: TextStyle(color: Colors.grey[500], fontSize: 8.0, height: 2.0),
         ),
       ],
     ),
@@ -113,23 +108,17 @@ Widget _titleSection() {
 }
 
 Widget _buttonSection() {
-  return GestureDetector(
-    onTap: () {
-//       Navigator.push(context, SlideRightRoute(page: DetailTwoDialog()));
-//       Navigator.of(context).pushNamed('/b');
-    },
-    child: Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildListColumn(Colors.orange),
-          new Divider(),
-          _buildListColumn(Colors.red),
-          new Divider(),
-          _buildListColumn(Colors.blueGrey),
-          new Divider(),
-        ],
-      ),
+  return Container(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildListColumn(Colors.orange),
+        new Divider(),
+        _buildListColumn(Colors.red),
+        new Divider(),
+        _buildListColumn(Colors.blueGrey),
+        new Divider(),
+      ],
     ),
   );
 }
