@@ -14,17 +14,20 @@ class DetailOneDialog extends StatefulWidget {
 
 class _DetailOneDialogState extends State<DetailOneDialog> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<LatLng> tappedPoints = [];
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
           key: _scaffoldKey,
-          appBar: AppBar(title: const Text('Detail Page One'), leading: Icon(Icons.arrow_back_ios, color:  Colors.white)),
+          appBar: AppBar(
+              title: const Text('Detail Page One'),
+              leading: Icon(Icons.arrow_back_ios, color: Colors.white)),
           body: Align(
               alignment: Alignment.topLeft,
               child: Container(
-                child: _showBottomSheet(context),
+                  child: _showBottomSheet(context),
               ))),
     );
   }
@@ -45,14 +48,13 @@ Container _showBottomSheet(BuildContext context) {
 }
 
 Widget _showMap() {
-  var markers  = <Marker>[
+  var markers = <Marker>[
     Marker(
       width: 80.0,
       height: 80.0,
       point: LatLng(53.3498, -6.2603),
-      builder: (ctx) => Container(
-        child: Icon(Icons.fiber_manual_record, color: Colors.red)
-      ),
+      builder: (ctx) =>
+          Container(child: Icon(Icons.fiber_manual_record, color: Colors.red)),
     ),
     Marker(
       width: 80.0,
@@ -64,31 +66,46 @@ Widget _showMap() {
     )
   ];
 
-  var overlayImages = <OverlayImage>[
-    OverlayImage(
-        bounds: LatLngBounds(LatLng(53.3498, -6.2603), LatLng(48.8566, 2.3522)),
-        opacity: 0.8,
-        imageProvider: NetworkImage(
-            'https://images.pexels.com/photos/231009/pexels-photo-231009.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=600')),
+  var polygonLayer = <Polygon>[
+    Polygon(
+        points: [
+          LatLng(53.3498, -6.2603),
+          LatLng(48.8566, 2.3522),
+          LatLng(51.5, -0.09)
+        ],
+        borderColor: Colors.greenAccent,
+        borderStrokeWidth: 2,
+        color: Colors.transparent)
   ];
+
+  MapController mapController = MapController();
 
   return Container(
     child: Column(
       children: <Widget>[
         Flexible(
             child: FlutterMap(
-              options: MapOptions(zoom: 5.0, center: LatLng(51.5, -0.09)),
-              layers: [
-                TileLayerOptions(
-                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
-                  tileProvider: NonCachingNetworkTileProvider(),
-                ),
-                MarkerLayerOptions(markers: markers),
-                OverlayImageLayerOptions(overlayImages: overlayImages)
-              ],
-            )
-        )
+          options: MapOptions(
+            zoom: 5.0,
+            center: LatLng(51.5, -0.09),
+//            onLongPress: _handleLongPress,
+//            onPositionChanged: _handlePositionChanged
+          ),
+          layers: [
+            TileLayerOptions(
+              urlTemplate: "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
+              additionalOptions: {
+                'accessToken': 'pk.eyJ1IjoiaHVpbGVlIiwiYSI6ImNrN20xazlmcjA4ankzaHBvcHhvNWV3aWgifQ.KSYTP_EopSvW9lmTcvglKw',
+                'id': 'mapbox.streets',
+              },
+            ),
+            MarkerLayerOptions(markers: markers),
+//            OverlayImageLayerOptions(overlayImages: overlayImage)
+//              PolylineLayerOptions(polylines: polylineLayer )
+            PolygonLayerOptions(polygons: polygonLayer)
+          ],
+          mapController: mapController,
+        ))
       ],
     ),
     height: 200,
@@ -96,22 +113,23 @@ Widget _showMap() {
   );
 }
 
+
 Widget _titleEvent(BuildContext context) {
   return Container(
     padding: const EdgeInsets.only(left: 15, right: 15),
     alignment: Alignment.topLeft,
     child: Column(
-       children: <Widget>[
-         GestureDetector(
-           child:  Text(
-             'Events',
-             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
-           ),
-           onTap: (){
-             Navigator.push(context, SlideRightRoute(page: DetailTwoPage()));
-           },
-         ),
-       ],
+      children: <Widget>[
+        GestureDetector(
+          child: Text(
+            'Events',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0),
+          ),
+          onTap: () {
+            Navigator.push(context, SlideRightRoute(page: DetailTwoPage()));
+          },
+        ),
+      ],
     ),
   );
 }
@@ -123,13 +141,11 @@ Widget _titleSection() {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Oeschinen Lake Campground',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0, height:  1.5),
-        ),
+        Text('Oeschinen Lake Campground', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12.0, height: 1.5),),
         Text(
           'Kandersteg, Switzerland',
-          style: TextStyle(color: Colors.grey[500], fontSize: 12.0, height:  1.5),
+          style:
+              TextStyle(color: Colors.grey[500], fontSize: 12.0, height: 1.5),
         ),
         Text(
           'Minimum Depth: 12km    Maximum Depth: 52km',
@@ -232,4 +248,17 @@ Column _buildListColumn(Color colors) {
       ),
     ],
   );
+}
+
+
+void _handleLongPress(LatLng point) {
+  debugPrint('point latitude is--> ${point.latitude}, longtide is ${point.longitude}');
+}
+
+void _handlePositionChanged(MapPosition position, bool hasGesture) {
+  debugPrint('position latitude is--> ${position.center.latitude}, longtide is ${position.center.longitude}, has getsture is $hasGesture');
+}
+
+void _handleTap(LatLng point) {
+  debugPrint('tap point latitude is--> ${point.latitude}, longtide is ${point.longitude}');
 }

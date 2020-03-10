@@ -30,12 +30,8 @@ Widget _image(){
               options: MapOptions(zoom: 5.0),
               layers: [
                 TileLayerOptions(
-                  urlTemplate:
-                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: ['a', 'b', 'c'],
-                  // For example purposes. It is recommended to use
-                  // TileProvider with a caching and retry strategy, like
-                  // NetworkTileProvider or CachedNetworkTileProvider
+                  urlTemplate: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+                  subdomains: [],
                   tileProvider: NonCachingNetworkTileProvider(),
                 ),
               ],
