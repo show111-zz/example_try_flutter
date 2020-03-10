@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app/util/slide_left_route.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong/latlong.dart';
 
 import 'detail_two.dart';
 
@@ -32,7 +34,7 @@ Container _showBottomSheet(BuildContext context) {
   return Container(
     child: Column(
       children: <Widget>[
-        _image(),
+        _showMap(),
         _titleSection(),
         _titleEvent(context),
         Divider(),
@@ -42,15 +44,54 @@ Container _showBottomSheet(BuildContext context) {
   );
 }
 
-Widget _image() {
+Widget _showMap() {
+  var markers  = <Marker>[
+    Marker(
+      width: 80.0,
+      height: 80.0,
+      point: LatLng(53.3498, -6.2603),
+      builder: (ctx) => Container(
+        child: Icon(Icons.fiber_manual_record, color: Colors.red)
+      ),
+    ),
+    Marker(
+      width: 80.0,
+      height: 80.0,
+      point: LatLng(48.8566, 2.3522),
+      builder: (ctx) => Container(
+        child: Icon(Icons.fiber_manual_record, color: Colors.green),
+      ),
+    )
+  ];
+
+  var overlayImages = <OverlayImage>[
+    OverlayImage(
+        bounds: LatLngBounds(LatLng(53.3498, -6.2603), LatLng(48.8566, 2.3522)),
+        opacity: 0.8,
+        imageProvider: NetworkImage(
+            'https://images.pexels.com/photos/231009/pexels-photo-231009.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=600')),
+  ];
+
   return Container(
-//    child: new Image.network(
-//      'https://gw.alicdn.com/tfs/TB1CgtkJeuSBuNjy1XcXXcYjFXa-906-520.png',
-//      fit: BoxFit.fitWidth,
-//      width: 420,
-//      height: 200,
-//    ),
-    height: 160,
+    child: Column(
+      children: <Widget>[
+        Flexible(
+            child: FlutterMap(
+              options: MapOptions(zoom: 5.0, center: LatLng(51.5, -0.09)),
+              layers: [
+                TileLayerOptions(
+                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                  tileProvider: NonCachingNetworkTileProvider(),
+                ),
+                MarkerLayerOptions(markers: markers),
+                OverlayImageLayerOptions(overlayImages: overlayImages)
+              ],
+            )
+        )
+      ],
+    ),
+    height: 200,
     color: Colors.grey[350],
   );
 }
@@ -77,7 +118,7 @@ Widget _titleEvent(BuildContext context) {
 
 Widget _titleSection() {
   return Container(
-    padding: const EdgeInsets.all(15),
+    padding: const EdgeInsets.all(8),
     alignment: Alignment.topLeft,
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -110,7 +151,7 @@ Widget _titleSection() {
 Widget _buttonSection() {
   return Container(
     child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildListColumn(Colors.orange),
         new Divider(),
@@ -129,7 +170,7 @@ Column _buildListColumn(Color colors) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
       Container(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(8),
         child: new Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,

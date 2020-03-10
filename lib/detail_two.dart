@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 
 class DetailTwoPage extends StatelessWidget {
 
@@ -18,18 +19,31 @@ class DetailTwoPage extends StatelessWidget {
         )
     );
   }
-
 }
-
 
 Widget _image(){
   return Container(
-//    child: new Image.network('https://gw.alicdn.com/tfs/TB1CgtkJeuSBuNjy1XcXXcYjFXa-906-520.png',
-//      fit: BoxFit.fitWidth,
-//      width: 420,
-//      height: 200,
-//    ),
-    height: 160,
+    child: Column(
+      children: <Widget>[
+        Flexible(
+            child: FlutterMap(
+              options: MapOptions(zoom: 5.0),
+              layers: [
+                TileLayerOptions(
+                  urlTemplate:
+                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: ['a', 'b', 'c'],
+                  // For example purposes. It is recommended to use
+                  // TileProvider with a caching and retry strategy, like
+                  // NetworkTileProvider or CachedNetworkTileProvider
+                  tileProvider: NonCachingNetworkTileProvider(),
+                ),
+              ],
+            )
+        )
+      ],
+    ),
+    height: 200,
     color: Colors.grey[300],
   );
 }
@@ -37,7 +51,7 @@ Widget _image(){
 Widget _titleSection(){
   return Container(
     alignment: Alignment.topLeft,
-    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 15.0),
+    padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -100,8 +114,6 @@ Widget _toggleButton(){
   );
 }
 
-
-
 Column _buildListColumn(Color colors) {
   return Column(
     mainAxisSize: MainAxisSize.min,
@@ -114,14 +126,14 @@ Column _buildListColumn(Color colors) {
       ),
       Container(
         color: Colors.grey[350],
-        height: 50.0,
+        height: 40.0,
         width: 420.0,
         alignment: Alignment.center,
         margin: const EdgeInsets.only(left: 10.0, right: 10.0),
       ),
       Container(
         color: Colors.grey[350],
-        height: 50.0,
+        height: 40.0,
         width: 420.0,
         alignment: Alignment.center,
         margin: const EdgeInsets.only(left: 10.0, right: 10.0, top: 5.0),
