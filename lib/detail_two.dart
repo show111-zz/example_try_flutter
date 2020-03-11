@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/rect_map.dart';
 import 'package:flutter_map/flutter_map.dart';
+
+import 'util/slide_left_route.dart';
+
 
 class DetailTwoPage extends StatelessWidget {
 
@@ -12,7 +16,7 @@ class DetailTwoPage extends StatelessWidget {
         body: Column(
           children: <Widget>[
             _image(),
-            _titleSection(),
+            _titleSection(context),
             _toggleButton(),
             _buttonSection(context),
           ],
@@ -44,14 +48,19 @@ Widget _image(){
   );
 }
 
-Widget _titleSection(){
+Widget _titleSection(BuildContext context){
   return Container(
     alignment: Alignment.topLeft,
     padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('AOI Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize:15.0, height: 1.5)),
+        GestureDetector(
+          child: Text('AOI Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize:15.0, height: 1.5)),
+          onTap: (){
+            Navigator.push(context, SlideRightRoute(page: RectMapPage()));
+          },
+        ),
         Text('Exact Location, Location ', style: TextStyle(color: Colors.grey[500], fontSize:10.0, height: 1.5),),
         Text('Minimum Depth       Maximum Depth', style: TextStyle(color: Colors.grey[500], fontSize:10.0, height: 1.5),),
         Text('Method of Event Detection: ', style: TextStyle(color: Colors.grey[500], fontSize:12.0, height: 2),),
