@@ -20,7 +20,7 @@ class DrawRectPluginState extends State<RectMapPage>{
       body: Column(
         children: <Widget>[
            Flexible(child: FlutterMap(
-             options: MapOptions(center: LatLng(45.5231, -122.6765), zoom: 13.0, onTap: _handleTap, plugins: [RectangleCustomPlugin()]),
+             options: MapOptions(center: LatLng(51.5, -0.09), zoom: 13.0, onTap: _handleTap, plugins: [RectangleCustomPlugin()]),
              layers: [
                TileLayerOptions(
                  urlTemplate: "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
@@ -29,7 +29,7 @@ class DrawRectPluginState extends State<RectMapPage>{
                    'id': 'mapbox.streets',
                  },
                ),
-              RectanglePluginOptions(LatLng(48.8566, 2.3522), LatLng(45.5231, -122.6765), 2.0, Colors.deepOrange.withOpacity(0.5), 5.0)
+              RectanglePluginOptions(LatLng(48.8566, 2.3522), LatLng(51.5, -0.09), 2.0, Colors.deepOrange.withOpacity(0.5), 5.0)
              ],
            ))
         ],
@@ -108,7 +108,7 @@ class RectangleLayer extends StatelessWidget{
             var pos2 = mapState.project(options.point2);
             pos2 = pos2.multiplyBy(mapState.getZoomScale(mapState.zoom, mapState.zoom)) - mapState.getPixelOrigin();
            debugPrint("map offset2 x is ${pos2.x.toDouble()}, offset2 y is ${pos2.y.toDouble()}");
-            options.offset1 = Offset(pos2.x.toDouble(), pos2.y.toDouble());
+            options.offset2 = Offset(pos2.x.toDouble(), pos2.y.toDouble());
 
             return CustomPaint(
               painter: RectanglePainter(options.offset1, options.offset2, options.width, options.lineColor, options.lineWidth),
