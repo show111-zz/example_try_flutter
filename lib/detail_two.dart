@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/rect_map.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong/latlong.dart';
 
 import 'util/slide_left_route.dart';
 
@@ -15,7 +16,7 @@ class DetailTwoPage extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
-            _image(),
+            _imageLayer(),
             _titleSection(context),
             _toggleButton(),
             _buttonSection(context),
@@ -25,19 +26,31 @@ class DetailTwoPage extends StatelessWidget {
   }
 }
 
-Widget _image(){
+Widget _imageLayer(){
+
+  var markers = _getMarkerList(null, null);
+
+  var overlayImages = <OverlayImage>[
+    OverlayImage(
+        bounds: LatLngBounds(LatLng(51.5, -0.09), LatLng(48.8566, 2.3522)),
+        opacity: 0.8,
+        imageProvider: NetworkImage(
+            'https://images.pexels.com/photos/231009/pexels-photo-231009.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=300&w=600')),
+  ];
+
   return Container(
     child: Column(
       children: <Widget>[
         Flexible(
             child: FlutterMap(
-              options: MapOptions(zoom: 5.0),
+              options: MapOptions(center: LatLng(51.5, -0.09), zoom: 5.0, onLongPress: _handleLongPress),
               layers: [
                 TileLayerOptions(
                   urlTemplate: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
                   subdomains: [],
-                  tileProvider: NonCachingNetworkTileProvider(),
                 ),
+                OverlayImageLayerOptions(overlayImages: overlayImages),
+                MarkerLayerOptions(markers: markers)
               ],
             )
         )
@@ -47,6 +60,7 @@ Widget _image(){
     color: Colors.grey[300],
   );
 }
+
 
 Widget _titleSection(BuildContext context){
   return Container(
@@ -145,4 +159,34 @@ Column _buildListColumn(Color colors) {
       )
     ],
   );
+}
+
+List<Marker> _getMarkerList(LatLng point1, LatLng point2){
+  if(point1 == null){
+    point1 = LatLng(51.5, -0.09);
+  }
+  if(point2 == null){
+    point2 = LatLng(48.8566, 2.3522);
+  }
+
+  var markers = <Marker>[
+    Marker(
+        width: 80.0,
+        height: 80.0,
+        point: point1,
+        builder: (context) => Container(child: Icon(Icons.add_location))
+    ),
+    Marker(
+        width: 80.0,
+        height: 80.0,
+        point: point2,
+        builder: (context) => Container(child: Icon(Icons.add_location))
+    )
+  ];
+  return markers;
+}
+
+void _handleLongPress(LatLng point) {
+
+
 }

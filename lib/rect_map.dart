@@ -13,14 +13,26 @@ class RectMapPage extends StatefulWidget{
 }
 
 class DrawRectPluginState extends State<RectMapPage>{
+
+  MapController mapController;
+
+  @override
+  void initState() {
+    super.initState();
+    mapController = MapController();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var markers = _getMarkerList(LatLng(51.5, -0.09), LatLng(48.8566, 2.3522));
+
     return Scaffold(
       appBar: AppBar(title: Text('Rectangle plugin on Map')),
       body: Column(
         children: <Widget>[
            Flexible(child: FlutterMap(
-             options: MapOptions(center: LatLng(51.5, -0.09), zoom: 13.0, onTap: _handleTap, plugins: [RectangleCustomPlugin()]),
+             mapController: mapController,
+             options: MapOptions(center:LatLng(51.5, -0.09), zoom: 6.0, onLongPress: _handleLongPress, plugins: [RectangleCustomPlugin()]),
              layers: [
                TileLayerOptions(
                  urlTemplate: "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}@2x.png?access_token={accessToken}",
@@ -29,7 +41,8 @@ class DrawRectPluginState extends State<RectMapPage>{
                    'id': 'mapbox.streets',
                  },
                ),
-              RectanglePluginOptions(LatLng(48.8566, 2.3522), LatLng(51.5, -0.09), 2.0, Colors.deepOrange.withOpacity(0.5), 5.0)
+               MarkerLayerOptions(markers: markers),
+               RectanglePluginOptions(LatLng(51.5, -0.09),LatLng(48.8566, 2.3522), 2.0, Colors.deepOrange.withOpacity(0.5), 5.0),
              ],
            ))
         ],
@@ -38,12 +51,25 @@ class DrawRectPluginState extends State<RectMapPage>{
   }
 
   void _handleTap(LatLng point) {
-    setState(() {
+      setState(() {
       debugPrint("tap position latitude is ${point.latitude}, and longtude is ${point.longitude}");
+//      var bounds = LatLngBounds();
+//      bounds.extend(paris);
+//      bounds.extend(london);
+//      mapController.fitBounds(bounds, options: FitBoundsOptions(padding: EdgeInsets.all(10.0), maxZoom: 10.0));
     });
   }
-}
 
+  void _handleLongPress(LatLng point) {
+    setState(() {
+     _getMarkerList(point, null);
+      mapController.move(point, 6.0);
+    });
+
+    debugPrint("long press position latitude is ${point.latitude}, and longtude is ${point.longitude}");
+  }
+
+}
 
 class RectanglePluginOptions extends LayerOptions{
    LatLng point1;
@@ -80,6 +106,7 @@ class RectangleCustomPlugin implements MapPlugin{
 
 
 class RectangleLayer extends StatelessWidget{
+
   final RectanglePluginOptions options;
   final MapState mapState;
   final Stream<Null> stream;
@@ -99,15 +126,15 @@ class RectangleLayer extends StatelessWidget{
   Widget _build(BuildContext context, Size size) {
      return StreamBuilder<void>(
          stream: stream,
-         builder:(BuildContext context, _) {
+         builder:(BuildContext context,_) {
             var pos1 = mapState.project(options.point1);
             pos1 = pos1.multiplyBy(mapState.getZoomScale(mapState.zoom, mapState.zoom)) - mapState.getPixelOrigin();
-           debugPrint("map offset1 x is ${pos1.x.toDouble()}, offset1 y is ${pos1.y.toDouble()}");
+//           debugPrint("map offset1 x is ${pos1.x.toDouble()}, offset1 y is ${pos1.y.toDouble()}");
             options.offset1 = Offset(pos1.x.toDouble(), pos1.y.toDouble());
 
             var pos2 = mapState.project(options.point2);
             pos2 = pos2.multiplyBy(mapState.getZoomScale(mapState.zoom, mapState.zoom)) - mapState.getPixelOrigin();
-           debugPrint("map offset2 x is ${pos2.x.toDouble()}, offset2 y is ${pos2.y.toDouble()}");
+//           debugPrint("map offset2 x is ${pos2.x.toDouble()}, offset2 y is ${pos2.y.toDouble()}");
             options.offset2 = Offset(pos2.x.toDouble(), pos2.y.toDouble());
 
             return CustomPaint(
@@ -136,20 +163,50 @@ class RectanglePainter extends CustomPainter{
       ..strokeWidth = lineWidth
       ..style = PaintingStyle.stroke;
 
-    canvas.drawCircle(this.offset1, 10, paint);
+//    canvas.drawCircle(this.offset1, 10, paint);
 
     canvas.drawRect(rect, paint);
 
-    canvas.drawCircle(this.offset2, 10, paint);
+//    canvas.drawCircle(this.offset2, 10, paint);
 
   }
 
   @override
   bool shouldRepaint(CustomPainter oldDelegate) {
-    return false;
+    return true;
   }
 
 }
+
+
+
+
+List<Marker> _getMarkerList(LatLng point1, LatLng point2){
+   if(point1 == null){
+      point1 = LatLng(51.5, -0.09);
+   }
+   if(point2 == null){
+      point2 = LatLng(48.8566, 2.3522);
+   }
+
+   var markers = <Marker>[
+      Marker(
+        width: 80.0,
+        height: 80.0,
+        point: point1,
+        builder: (context) => Container(child: Icon(Icons.add_location))
+      ),
+      Marker(
+          width: 80.0,
+          height: 80.0,
+          point: point2,
+          builder: (context) => Container(child: Icon(Icons.add_location))
+      )
+    ];
+   return markers;
+}
+
+
 
 
 
