@@ -1,8 +1,11 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app/path_line_animation.dart';
 import 'package:flutter_app/rect_map.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
+import 'animation_part.dart';
 import 'util/slide_left_route.dart';
 
 
@@ -18,7 +21,7 @@ class DetailTwoPage extends StatelessWidget {
           children: <Widget>[
             _imageLayer(),
             _titleSection(context),
-            _toggleButton(),
+            _toggleButton(context),
             _buttonSection(context),
           ],
         )
@@ -98,7 +101,7 @@ Widget _buttonSection(BuildContext context){
   );
 }
 
-Widget _toggleButton(){
+Widget _toggleButton(BuildContext context){
   return Container(
     padding: const EdgeInsets.only(left:15.0, right: 15.0),
     child: Row(
@@ -125,7 +128,12 @@ Widget _toggleButton(){
         ),
 
         Expanded(
-          child: Icon(Icons.account_circle, color: Colors.blue),
+          child: GestureDetector(
+            child: Icon(Icons.account_circle, color: Colors.blue),
+            onTap: (){
+              Navigator.push(context, SlideRightRoute(page: AnimationPart()));
+            },
+          ),
           flex: 1,
         )
       ],

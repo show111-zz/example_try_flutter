@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/util/Env.dart';
 import 'package:flutter_app/util/slide_left_route.dart';
 
 import 'detail_one.dart';
@@ -12,6 +13,10 @@ void main() {
 }
 
 class ListApp extends StatelessWidget {
+
+  static String _pkg = "gooey_edge";
+  static String get pkg => Env.getPackage(_pkg);
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
