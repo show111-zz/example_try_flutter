@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/path_line_animation.dart';
 import 'package:flutter_app/stagger_animation_page.dart';
+import 'package:flutter_app/syntonic_logo_animation2.dart';
+import 'package:flutter_app/syntronic_logo_animation4.dart';
 import 'package:flutter_app/util/slide_left_route.dart';
 
 import 'AnimatedDecoratedBox1.dart';
@@ -90,7 +92,16 @@ class AnimationPart extends StatelessWidget {
                       style: TextStyle(fontSize: 30, color: Colors.lightGreen)),
                   onTap: () {
                     Navigator.push(
-                        context, SlideRightRoute(page: AnimatedDecoratedBox1()));
+                        context, SlideRightRoute(page: SyntronicLogoAnimate2()));
+                  },
+                ),
+
+                GestureDetector(
+                  child: Text("Logo Path Animation",
+                      style: TextStyle(fontSize: 30, color: Colors.deepOrange)),
+                  onTap: () {
+                    Navigator.push(
+                        context, SlideRightRoute(page: LogoPathAnimation4Page()));
                   },
                 ),
 
