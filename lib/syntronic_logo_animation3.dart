@@ -21,7 +21,7 @@ class LogoAnimationWidget extends StatelessWidget {
   Widget build(BuildContext context) {
       return Column(
         children: <Widget>[
-          new CustomPaint(painter: new PathPainter(path)),
+//          new CustomPaint(painter: new PathPainter(path)),
 //          new CustomPaint(painter: new PathPainter(star, false)),
         ],
       );
