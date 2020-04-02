@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:path_drawing/path_drawing.dart';
 
 class PathLineAnimation extends StatefulWidget {
@@ -8,16 +9,18 @@ class PathLineAnimation extends StatefulWidget {
   _PathLineAnimationState createState() => _PathLineAnimationState();
 }
 
-class _PathLineAnimationState extends State<PathLineAnimation> with SingleTickerProviderStateMixin {
-
+class _PathLineAnimationState extends State<PathLineAnimation>
+    with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation _animation;
   GlobalKey customPaintKey1 = GlobalKey();
   GlobalKey customPaintKey2 = GlobalKey();
   GlobalKey customPaintKey3 = GlobalKey();
 
-  String path2 = 'M106.25,21.8198 L106.25,62.1198 C106.25,72.6898 97.69,81.2498 87.12,81.2498 L19.38,81.2498 C9.7,81.2498 1.71,74.0698 0.43,64.7498 L75.75,64.7498 C79.34,64.7498 82.59,63.2898 84.94,60.9398 C87.29,58.5898 88.75,55.3398 88.75,51.7498 C88.75,44.5698 82.93,38.7498 75.75,38.7498 L31.25,38.7498 C27.11,38.7498 23.75,35.3898 23.75,31.2498 L23.75,29.3198 C23.75,25.1798 27.11,21.8198 31.25,21.8198 L106.25,21.8198 Z';
-  String path1 = 'M106.0698,16.75 L30.7498,16.75 C23.5698,16.75 17.7498,22.57 17.7498,29.75 L17.7498,31.75 C17.7498,38.93 23.5698,44.75 30.7498,44.75 L75.2498,44.75 C77.3198,44.75 79.1898,45.59 80.5498,46.95 C81.9098,48.31 82.7498,50.18 82.7498,52.25 C82.7498,56.39 79.3898,59.75 75.2498,59.75 L0.2498,59.75 L0.2498,19.38 C0.2498,8.81 8.8098,0.25 19.3798,0.25 L87.1198,0.25 C96.7998,0.25 104.7898,7.43 106.0698,16.75';
+  String path2 =
+      'M106.25,21.8198 L106.25,62.1198 C106.25,72.6898 97.69,81.2498 87.12,81.2498 L19.38,81.2498 C9.7,81.2498 1.71,74.0698 0.43,64.7498 L75.75,64.7498 C79.34,64.7498 82.59,63.2898 84.94,60.9398 C87.29,58.5898 88.75,55.3398 88.75,51.7498 C88.75,44.5698 82.93,38.7498 75.75,38.7498 L31.25,38.7498 C27.11,38.7498 23.75,35.3898 23.75,31.2498 L23.75,29.3198 C23.75,25.1798 27.11,21.8198 31.25,21.8198 L106.25,21.8198 Z';
+  String path1 =
+      'M106.0698,16.75 L30.7498,16.75 C23.5698,16.75 17.7498,22.57 17.7498,29.75 L17.7498,31.75 C17.7498,38.93 23.5698,44.75 30.7498,44.75 L75.2498,44.75 C77.3198,44.75 79.1898,45.59 80.5498,46.95 C81.9098,48.31 82.7498,50.18 82.7498,52.25 C82.7498,56.39 79.3898,59.75 75.2498,59.75 L0.2498,59.75 L0.2498,19.38 C0.2498,8.81 8.8098,0.25 19.3798,0.25 L87.1198,0.25 C96.7998,0.25 104.7898,7.43 106.0698,16.75';
   Path _path1;
   Path _path2;
   double _fraction = 0.0;
@@ -25,27 +28,50 @@ class _PathLineAnimationState extends State<PathLineAnimation> with SingleTicker
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: Duration(seconds: 6));
+    _controller =
+        AnimationController(vsync: this, duration: Duration(seconds: 2));
     _path1 = startPressMotion(path1);
     _path2 = startPressMotion(path2);
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          CustomPaint(
-            key: customPaintKey1,
-            painter: PathSegmentPainter(_path1, _fraction),
-          ),
-          CustomPaint(
-            key: customPaintKey2,
-            painter: PathSegmentPainter(_path2, _fraction),
-          ),
-        ],
+      body: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: double.infinity),
+        child: Flex(
+          direction: Axis.horizontal,
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Align(
+                alignment: FractionalOffset(0.18,0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    LogoLeftIcon(
+                        customPaintKey1: customPaintKey1,
+                        path1: _path1,
+                        fraction: _fraction),
+                    LogoLeftIcon(
+                        customPaintKey1: customPaintKey2,
+                        path1: _path2,
+                        fraction: _fraction),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: Align(
+                 alignment: Alignment.bottomLeft,
+                 widthFactor: 2,
+                 heightFactor: 2,
+                 child: SvgPicture.asset('assets/logo_16.svg'),
+              ),
+              flex: 2,
+            )
+          ],
+        ),
       ),
     );
   }
@@ -64,13 +90,41 @@ class _PathLineAnimationState extends State<PathLineAnimation> with SingleTicker
     PathMetric pm = pms.elementAt(0);
     double len = pm.length;
     _animation = Tween(begin: 0.0, end: len).animate(_controller)
-      ..addListener( (){setState(() => _fraction = _animation.value);} )
-      ..addStatusListener((status){ if(status == AnimationStatus.completed){ _controller.stop(); } });
+      ..addListener(() {
+        setState(() => _fraction = _animation.value);
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _controller.stop();
+        }
+      });
     _controller.forward();
 
     return _path;
   }
+}
 
+class LogoLeftIcon extends StatelessWidget {
+  const LogoLeftIcon({
+    Key key,
+    @required this.customPaintKey1,
+    @required Path path1,
+    @required double fraction,
+  })  : _path1 = path1,
+        _fraction = fraction,
+        super(key: key);
+
+  final GlobalKey<State<StatefulWidget>> customPaintKey1;
+  final Path _path1;
+  final double _fraction;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      key: customPaintKey1,
+      painter: PathSegmentPainter(_path1, _fraction),
+    );
+  }
 }
 
 const List<String> path = <String>[
@@ -78,7 +132,7 @@ const List<String> path = <String>[
   'M106.0698,16.75 L30.7498,16.75 C23.5698,16.75 17.7498,22.57 17.7498,29.75 L17.7498,31.75 C17.7498,38.93 23.5698,44.75 30.7498,44.75 L75.2498,44.75 C77.3198,44.75 79.1898,45.59 80.5498,46.95 C81.9098,48.31 82.7498,50.18 82.7498,52.25 C82.7498,56.39 79.3898,59.75 75.2498,59.75 L0.2498,59.75 L0.2498,19.38 C0.2498,8.81 8.8098,0.25 19.3798,0.25 L87.1198,0.25 C96.7998,0.25 104.7898,7.43 106.0698,16.75'
 ];
 
-class PathSegmentPainter extends CustomPainter{
+class PathSegmentPainter extends CustomPainter {
   double _fraction;
   Path _path;
 
@@ -90,7 +144,7 @@ class PathSegmentPainter extends CustomPainter{
 
   @override
   void paint(Canvas canvas, Size size) {
-    if(_paint == null) return;
+    if (_paint == null) return;
     Path segmentPath = Path();
 
     PathMetrics pms = _path.computeMetrics();
@@ -107,7 +161,6 @@ class PathSegmentPainter extends CustomPainter{
     return true;
   }
 }
-
 
 class PathPainter extends CustomPainter {
   double _fraction;
@@ -140,6 +193,3 @@ class PathPainter extends CustomPainter {
     return true;
   }
 }
-
-
-
