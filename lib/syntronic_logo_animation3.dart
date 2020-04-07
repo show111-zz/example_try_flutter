@@ -1,32 +1,109 @@
-import 'package:built_path/builder.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class LogoAnimation3 extends StatelessWidget {
+class LogoAnimation3 extends StatefulWidget {
+  @override
+  _LogoAnimation3State createState() => _LogoAnimation3State();
+}
+
+class _LogoAnimation3State extends State<LogoAnimation3>
+    with SingleTickerProviderStateMixin {
+  AnimationController controller;
+  Animation<double> animationTransition;
+  Animation<double> animationOpacity;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = AnimationController(duration: const Duration(seconds: 3), vsync: this);
+    animationOpacity = CurvedAnimation(parent: controller, curve: Curves.easeInOut);
+    animationTransition = Tween<double>(begin: 0, end: 300).animate(controller);
+    controller.forward();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LogoAnimationWidget(),
+      backgroundColor: Colors.white,
+      body: Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(20.0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              flex: 3,
+              child: GrowTransition(
+                animation: animationTransition,
+                child: SvgPicture.asset('assets/logo_0.svg', fit: BoxFit.contain,),
+              ),
+            ),
+            Expanded(
+              flex: 6,
+              child: TextLiquidFill(
+                text: 'Syntronic',
+                waveColor: Color(0xFF1478C7),
+                boxBackgroundColor: Colors.white,
+                textStyle: TextStyle(
+                  fontSize: 50.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+//           AnimationLogo(animation: animation,),
+//           GrowTransition(animation: animation, child: SvgPicture.asset('assets/logo_16.svg', color: animation2.value,),),
+          ],
+        ),
+      ),
     );
   }
 }
 
-class LogoAnimationWidget extends StatelessWidget {
+class AnimationLogo extends AnimatedWidget {
+  static final _opacityTween = Tween<double>(begin: 0.0, end: 1.0);
+  static final _sizeTween = Tween<double>(begin: 0, end: 100);
 
-
-//  @SvgPath('M106.25,21.8198 L106.25,62.1198 C106.25,72.6898 97.69,81.2498 87.12,81.2498 L19.38,81.2498 C9.7,81.2498 1.71,74.0698 0.43,64.7498 L75.75,64.7498 C79.34,64.7498 82.59,63.2898 84.94,60.9398 C87.29,58.5898 88.75,55.3398 88.75,51.7498 C88.75,44.5698 82.93,38.7498 75.75,38.7498 L31.25,38.7498 C27.11,38.7498 23.75,35.3898 23.75,31.2498 L23.75,29.3198 C23.75,25.1798 27.11,21.8198 31.25,21.8198 L106.25,21.8198 Z')
-//  Path get path => _$logoPage_path;
-
+  AnimationLogo({Key key, Animation<double> animation})
+      : super(key: key, listenable: animation);
 
   @override
   Widget build(BuildContext context) {
-      return Column(
-        children: <Widget>[
-//          new CustomPaint(painter: new PathPainter(path)),
-//          new CustomPaint(painter: new PathPainter(star, false)),
-        ],
-      );
+    final animation = listenable as Animation<double>;
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Opacity(
+          opacity: _opacityTween.evaluate(animation),
+          child: Container(
+            child: SvgPicture.asset(
+              'assets/logo_0.svg',
+              fit: BoxFit.fill,
+            ),
+            width: _sizeTween.evaluate(animation),
+            height: _sizeTween.evaluate(animation),
+          ),
+        ),
+      ),
+    );
   }
+}
 
+class GrowTransition extends StatelessWidget {
+  GrowTransition({this.child, this.animation});
+
+  final Widget child;
+  final Animation<double> animation;
+
+  Widget build(BuildContext context) => Center(
+        child: AnimatedBuilder(
+            animation: animation,
+            builder: (context, child) => Container(
+                  height: animation.value,
+                  width: animation.value,
+                  child: child,
+                ),
+            child: child),
+      );
 }
 
 class PathPainter extends CustomPainter {

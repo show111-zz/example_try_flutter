@@ -33,6 +33,12 @@ class _LogoPathAnimation4PageState extends State<LogoPathAnimation4Page>
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Flex(

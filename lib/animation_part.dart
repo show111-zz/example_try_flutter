@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/path_line_animation.dart';
 import 'package:flutter_app/stagger_animation_page.dart';
 import 'package:flutter_app/syntonic_logo_animation2.dart';
+import 'package:flutter_app/syntronic_logo_animation3.dart';
 import 'package:flutter_app/syntronic_logo_animation4.dart';
 import 'package:flutter_app/util/slide_left_route.dart';
 
-import 'AnimatedDecoratedBox1.dart';
 import 'TypeWriterWidget.dart';
 import 'animated_switcher_page.dart';
 import 'custom_icon_animation.dart';
@@ -102,6 +102,15 @@ class AnimationPart extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                         context, SlideRightRoute(page: LogoPathAnimation4Page()));
+                  },
+                ),
+
+                GestureDetector(
+                  child: Text("Logo Animation2",
+                      style: TextStyle(fontSize: 30, color: Colors.greenAccent)),
+                  onTap: () {
+                    Navigator.push(
+                        context, SlideRightRoute(page: LogoAnimation3()));
                   },
                 ),
 
