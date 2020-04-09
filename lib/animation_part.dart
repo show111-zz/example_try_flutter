@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/animation_explaination.dart';
 import 'package:flutter_app/path_line_animation.dart';
 import 'package:flutter_app/stagger_animation_page.dart';
 import 'package:flutter_app/syntonic_logo_animation2.dart';
@@ -111,6 +112,15 @@ class AnimationPart extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                         context, SlideRightRoute(page: LogoAnimation3()));
+                  },
+                ),
+
+                GestureDetector(
+                  child: Text("Animation Explaination Session",
+                      style: TextStyle(fontSize: 30, color: Colors.yellow)),
+                  onTap: () {
+                    Navigator.push(
+                        context, SlideRightRoute(page: AnimationSharing()));
                   },
                 ),
 
