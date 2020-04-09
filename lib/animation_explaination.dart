@@ -26,10 +26,10 @@ class _AnimationSharingState extends State<AnimationSharing> with SingleTickerPr
 
     animationCurve = CurvedAnimation(parent: controller, curve: Curves.easeIn);
 
-    animationOpacity = Tween<double>(begin: 0.1, end: 1.0).animate(animationCurve)..addListener(() {setState(() {
+    animationOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(animationCurve)..addListener(() {setState(() {
     });});
 
-    animationSize = Tween<double>(begin: 0.1, end: 200.0).animate(animationCurve)..addListener(() {setState(() {
+    animationSize = Tween<double>(begin: 1, end: 200).animate(animationCurve)..addListener(() {setState(() {
     });});
 
     animationColor = ColorTween(begin: Colors.blue, end: Colors.white).animate(controller);
@@ -41,6 +41,7 @@ class _AnimationSharingState extends State<AnimationSharing> with SingleTickerPr
 //        controller.forward();
 //      }
 //    });
+
 
     controller.forward();
   }

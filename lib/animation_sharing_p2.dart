@@ -31,4 +31,5 @@ class _AnimationSharePage2State extends State<AnimationSharePage2> {
       ),
     );
   }
+
 }
