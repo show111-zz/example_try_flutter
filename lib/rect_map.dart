@@ -14,10 +14,12 @@ class RectMapPage extends StatefulWidget {
 }
 
 class DrawRectPluginState extends State<RectMapPage> {
-  var point1 = LatLng(51.5, -0.09);
-  var point2 = LatLng(48.8566, 2.3522);
-  var centerPoint = LatLng(50.0967, 1.2391);
+//  var point1 = LatLng(51.5, -0.09);
+//  var point2 = LatLng(48.8566, 2.3522);
+  LatLng point1, point2;
+  var centerPoint = LatLng(45.424721,  -75.695);
   String textStr = 'Create';
+  String text = 'Location Coordinate';
 
   MapController mapController;
   bool isShowMarkers = false;
@@ -37,7 +39,6 @@ class DrawRectPluginState extends State<RectMapPage> {
           point: point1,
           width: 50.0,
           height: 50.0,
-
           builder: (ctx) => Container(
             child: SvgPicture.asset(
               'assets/marker_left.svg',
@@ -82,7 +83,7 @@ class DrawRectPluginState extends State<RectMapPage> {
           Flexible(
             child: FlutterMap(
               mapController: mapController,
-              options: MapOptions(center: centerPoint, zoom: 7.3, plugins: [
+              options: MapOptions(center: centerPoint, zoom: 5.0, plugins: [
                 RectangleCustomPlugin(),
                 DragMarkerPlugin(),
               ]),
@@ -104,49 +105,76 @@ class DrawRectPluginState extends State<RectMapPage> {
               ],
             ),
           ),
-          Card(
-            color: Color(0xFF2F709F),
-            elevation: 3,
-            shape: ContinuousRectangleBorder(
-                side: BorderSide.none, borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-              child: GestureDetector(
-                onTap: () {
-                  if (textStr == 'Create') {
-                    setState(() {
-                      textStr = 'Set';
-                      isShowMarkers = true;
-                      isShowRectangle = true;
-                    });
-                  } else if (textStr == 'Set') {
-                    setState(() {
-                      textStr = 'Edit';
-                      isShowMarkers = false;
-                      isShowRectangle = true;
-                    });
-                  }
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      textStr,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 20.0,),
-                    ),
+          Column(
+            children: <Widget>[
+              Card(
+                color: Color(0xFF2F709F),
+                elevation: 3,
+                shape: ContinuousRectangleBorder(
+                    side: BorderSide.none, borderRadius: BorderRadius.circular(12)),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (textStr == 'Create') {
+                        getDiagonalPointsFromCenterPoint();
+                        setState(() {
+                          textStr = 'Set';
+                          isShowMarkers = true;
+                          isShowRectangle = true;
+                        });
+                      } else if (textStr == 'Set') {
+                        setState(() {
+                          textStr = 'Edit';
+                          isShowMarkers = false;
+                          isShowRectangle = true;
+                        });
+                      }
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          textStr,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(color: Colors.white, fontSize: 20.0,),
+                        ),
 
-                    SvgPicture.asset(
-                      'assets/rectangle_text.svg',
-                      fit: BoxFit.fill,
-                    )
-                  ],
+                        SvgPicture.asset(
+                          'assets/rectangle_text.svg',
+                          fit: BoxFit.fill,
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+              isShowRectangle ? UpdatedLocationWidget(point1: point1, point2: point2) : Text('Location Coordinate')
+            ],
           ),
         ],
       ),
     );
+  }
+
+  void getDiagonalPointsFromCenterPoint() {
+    print('${mapController.center.latitude} --- longitude is ${mapController.center.longitude}');
+    LatLngBounds latLngBounds = mapController.bounds;
+    point1 = latLngBounds.northWest;
+    point2 = latLngBounds.southEast;
+    mapController.fitBounds(latLngBounds, options: FitBoundsOptions( padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0),));
+  }
+}
+
+class UpdatedLocationWidget extends StatelessWidget {
+
+  final LatLng point1;
+  final LatLng point2;
+
+  UpdatedLocationWidget({this.point1, this.point2});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text('point1 latitude is ${point1.latitude} and longitutde is ${point1.longitude} \n point2 latitude is ${point2.latitude} and longitutde is ${point2.longitude}');
   }
 }
