@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/animation_explaination.dart';
-import 'package:flutter_app/kml/kml_demo_page.dart';
-import 'package:flutter_app/path_line_animation.dart';
-import 'package:flutter_app/stagger_animation_page.dart';
-import 'package:flutter_app/syntonic_logo_animation2.dart';
-import 'package:flutter_app/syntronic_logo_animation3.dart';
-import 'package:flutter_app/syntronic_logo_animation4.dart';
+import 'package:flutter_app/animation/animation_explaination.dart';
+import 'package:flutter_app/animation/path_line_animation.dart';
+import 'package:flutter_app/animation/stagger_animation_page.dart';
+import 'package:flutter_app/animation/syntonic_logo_animation2.dart';
+import 'package:flutter_app/animation/syntronic_logo_animation3.dart';
+import 'package:flutter_app/animation/syntronic_logo_animation4.dart';
 import 'package:flutter_app/util/slide_left_route.dart';
 
 import 'TypeWriterWidget.dart';
@@ -122,15 +121,6 @@ class AnimationPart extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                         context, SlideRightRoute(page: AnimationSharing()));
-                  },
-                ),
-
-                GestureDetector(
-                  child: Text("KML Screen",
-                      style: TextStyle(fontSize: 30, color: Colors.pinkAccent)),
-                  onTap: () {
-                    Navigator.push(
-                        context, SlideRightRoute(page: KmlDemoPage()));
                   },
                 ),
 

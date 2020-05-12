@@ -1,11 +1,10 @@
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/path_line_animation.dart';
-import 'package:flutter_app/rect_map.dart';
+import 'package:flutter_app/kml/kml_demo_page.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
-import 'animation_part.dart';
+import 'animation/animation_part.dart';
 import 'util/slide_left_route.dart';
 
 
@@ -46,7 +45,7 @@ Widget _imageLayer(){
       children: <Widget>[
         Flexible(
             child: FlutterMap(
-              options: MapOptions(center: LatLng(51.5, -0.09), zoom: 5.0, onLongPress: _handleLongPress),
+              options: MapOptions(center: LatLng(51.5, -0.09), zoom: 5.0,),
               layers: [
                 TileLayerOptions(
                   urlTemplate: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
@@ -75,7 +74,7 @@ Widget _titleSection(BuildContext context){
         GestureDetector(
           child: Text('AOI Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize:15.0, height: 1.5)),
           onTap: (){
-            Navigator.push(context, SlideRightRoute(page: RectMapPage()));
+            Navigator.push(context, SlideRightRoute(page: KmlDemoPage()));
           },
         ),
         Text('Exact Location, Location ', style: TextStyle(color: Colors.grey[500], fontSize:10.0, height: 1.5),),
@@ -194,7 +193,4 @@ List<Marker> _getMarkerList(LatLng point1, LatLng point2){
   return markers;
 }
 
-void _handleLongPress(LatLng point) {
 
-
-}

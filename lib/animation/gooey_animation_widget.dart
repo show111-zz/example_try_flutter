@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 
 import 'gooey_edge.dart';
-import 'logo_page.dart';
+import '../logo_page.dart';
 
 class GooeyAnimationWidget extends StatefulWidget{
 

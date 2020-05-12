@@ -5,16 +5,12 @@ import 'package:latlong/latlong.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'dragmarker.dart';
 
-void main() {
-  runApp(TestApp());
-}
-
-class TestApp extends StatefulWidget {
+class MapDraggableScreen extends StatefulWidget {
   @override
-  _TestAppState createState() => _TestAppState();
+  _MapDraggableScreenState createState() => _MapDraggableScreenState();
 }
 
-class _TestAppState extends State<TestApp> {
+class _MapDraggableScreenState extends State<MapDraggableScreen> {
   @override
   void initState() {
     super.initState();

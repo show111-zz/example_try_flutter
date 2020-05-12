@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/animation_sharing_3.dart';
+import 'package:flutter_app/animation/animation_sharing_3.dart';
 
 class AnimationSharePage2 extends StatefulWidget {
   @override

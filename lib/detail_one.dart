@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/rect_map.dart';
 import 'package:flutter_app/util/slide_left_route.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
@@ -41,7 +42,7 @@ Container _showBottomSheet(BuildContext context) {
         _titleSection(),
         _titleEvent(context),
         Divider(),
-        _buttonSection()
+        _buttonSection(context)
       ],
     ),
   );
@@ -88,8 +89,6 @@ Widget _showMap() {
           options: MapOptions(
             zoom: 5.0,
             center: LatLng(51.5, -0.09),
-//            onLongPress: _handleLongPress,
-//            onPositionChanged: _handlePositionChanged
           ),
           layers: [
             TileLayerOptions(
@@ -100,8 +99,6 @@ Widget _showMap() {
               },
             ),
             MarkerLayerOptions(markers: markers),
-//            OverlayImageLayerOptions(overlayImages: overlayImage)
-//              PolylineLayerOptions(polylines: polylineLayer )
             PolygonLayerOptions(polygons: polygonLayer)
           ],
           mapController: mapController,
@@ -164,23 +161,23 @@ Widget _titleSection() {
   );
 }
 
-Widget _buttonSection() {
+Widget _buttonSection(BuildContext context) {
   return Container(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        _buildListColumn(Colors.orange),
+        _buildListColumn(context,Colors.orange),
         new Divider(),
-        _buildListColumn(Colors.red),
+        _buildListColumn(context,Colors.red),
         new Divider(),
-        _buildListColumn(Colors.blueGrey),
+        _buildListColumn(context,Colors.blueGrey),
         new Divider(),
       ],
     ),
   );
 }
 
-Column _buildListColumn(Color colors) {
+Column _buildListColumn(BuildContext context,Color colors) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     mainAxisAlignment: MainAxisAlignment.center,
@@ -193,21 +190,24 @@ Column _buildListColumn(Color colors) {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Expanded(
-              child: new ListTile(
+              child: ListTile(
                 leading: Icon(Icons.brightness_1, color: colors),
-                title: new Text(
+                title: Text(
                   'AK, United States',
-                  style: new TextStyle(
+                  style: TextStyle(
                       fontWeight: FontWeight.w500, fontSize: 10.0),
                 ),
-                subtitle: new Text(
+                subtitle: Text(
                   'fdsfds',
-                  style: new TextStyle(
+                  style: TextStyle(
                       fontWeight: FontWeight.normal, fontSize: 6.0),
                 ),
                 dense: true,
                 contentPadding:
                     EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                onTap: (){
+                  Navigator.push(context, SlideRightRoute(page: RectMapPage()));
+                },
               ),
               flex: 3,
             ),
@@ -251,14 +251,3 @@ Column _buildListColumn(Color colors) {
 }
 
 
-void _handleLongPress(LatLng point) {
-  debugPrint('point latitude is--> ${point.latitude}, longtide is ${point.longitude}');
-}
-
-void _handlePositionChanged(MapPosition position, bool hasGesture) {
-  debugPrint('position latitude is--> ${position.center.latitude}, longtide is ${position.center.longitude}, has getsture is $hasGesture');
-}
-
-void _handleTap(LatLng point) {
-  debugPrint('tap point latitude is--> ${point.latitude}, longtide is ${point.longitude}');
-}
