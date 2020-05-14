@@ -1,15 +1,13 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_app/kml/kml_demo_page.dart';
+import 'package:flutter_app/kml/kml_groud_overlayers_page.dart';
+import 'package:flutter_app/kml/kml_placemarks_page.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
 import 'animation/animation_part.dart';
 import 'util/slide_left_route.dart';
 
-
 class DetailTwoPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,13 +21,11 @@ class DetailTwoPage extends StatelessWidget {
             _toggleButton(context),
             _buttonSection(context),
           ],
-        )
-    );
+        ));
   }
 }
 
-Widget _imageLayer(){
-
+Widget _imageLayer() {
   var markers = _getMarkerList(null, null);
 
   var overlayImages = <OverlayImage>[
@@ -45,17 +41,20 @@ Widget _imageLayer(){
       children: <Widget>[
         Flexible(
             child: FlutterMap(
-              options: MapOptions(center: LatLng(51.5, -0.09), zoom: 5.0,),
-              layers: [
-                TileLayerOptions(
-                  urlTemplate: 'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
-                  subdomains: [],
-                ),
-                OverlayImageLayerOptions(overlayImages: overlayImages),
-                MarkerLayerOptions(markers: markers)
-              ],
-            )
-        )
+          options: MapOptions(
+            center: LatLng(51.5, -0.09),
+            zoom: 5.0,
+          ),
+          layers: [
+            TileLayerOptions(
+              urlTemplate:
+                  'http://www.google.com/maps/vt?lyrs=m@189&gl=en&x={x}&y={y}&z={z}',
+              subdomains: [],
+            ),
+            OverlayImageLayerOptions(overlayImages: overlayImages),
+            MarkerLayerOptions(markers: markers)
+          ],
+        ))
       ],
     ),
     height: 200,
@@ -63,8 +62,7 @@ Widget _imageLayer(){
   );
 }
 
-
-Widget _titleSection(BuildContext context){
+Widget _titleSection(BuildContext context) {
   return Container(
     alignment: Alignment.topLeft,
     padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
@@ -72,22 +70,44 @@ Widget _titleSection(BuildContext context){
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         GestureDetector(
-          child: Text('AOI Name', style: TextStyle(fontWeight: FontWeight.bold, fontSize:15.0, height: 1.5)),
-          onTap: (){
-            Navigator.push(context, SlideRightRoute(page: KmlDemoPage()));
+          child: Text('AOI Name',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, fontSize: 15.0, height: 1.5)),
+          onTap: () {
+            Navigator.push(context, SlideRightRoute(page: KmlPlacemarksPage()));
           },
         ),
-        Text('Exact Location, Location ', style: TextStyle(color: Colors.grey[500], fontSize:10.0, height: 1.5),),
-        Text('Minimum Depth       Maximum Depth', style: TextStyle(color: Colors.grey[500], fontSize:10.0, height: 1.5),),
-        Text('Method of Event Detection: ', style: TextStyle(color: Colors.grey[500], fontSize:12.0, height: 2),),
-        Text('Method of Event Detection: Auto, Real ', style: TextStyle(color: Colors.grey[500], fontSize:12.0, height: 2),),
-        Text('Analysis Type: AI Analysis', style: TextStyle(color: Colors.grey[500], fontSize:12.0, height: 2),),
+        Text(
+          'Exact Location, Location ',
+          style:
+              TextStyle(color: Colors.grey[500], fontSize: 10.0, height: 1.5),
+        ),
+        Text(
+          'Minimum Depth       Maximum Depth',
+          style:
+              TextStyle(color: Colors.grey[500], fontSize: 10.0, height: 1.5),
+        ),
+        GestureDetector(
+            child: Text(
+          'Method of Event Detection: ',
+          style: TextStyle(color: Colors.grey[500], fontSize: 12.0, height: 2),
+        ), onTap: (){
+          Navigator.push(context, SlideRightRoute(page: KmlGoundOverlayersPage()));
+        },),
+        Text(
+          'Method of Event Detection: Auto, Real ',
+          style: TextStyle(color: Colors.grey[500], fontSize: 12.0, height: 2),
+        ),
+        Text(
+          'Analysis Type: AI Analysis',
+          style: TextStyle(color: Colors.grey[500], fontSize: 12.0, height: 2),
+        ),
       ],
     ),
   );
 }
 
-Widget _buttonSection(BuildContext context){
+Widget _buttonSection(BuildContext context) {
   return Container(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -100,9 +120,9 @@ Widget _buttonSection(BuildContext context){
   );
 }
 
-Widget _toggleButton(BuildContext context){
+Widget _toggleButton(BuildContext context) {
   return Container(
-    padding: const EdgeInsets.only(left:15.0, right: 15.0),
+    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
     child: Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -111,13 +131,11 @@ Widget _toggleButton(BuildContext context){
           child: new ListTile(
             title: new Text(
               'Notification Trigger',
-              style: new TextStyle(
-                  fontWeight: FontWeight.w500, fontSize: 13.0),
+              style: new TextStyle(fontWeight: FontWeight.w500, fontSize: 13.0),
             ),
             subtitle: new Text(
               'Turning off notification trigger will remove event from main page',
-              style: new TextStyle(
-                  fontWeight: FontWeight.w300, fontSize: 10.0),
+              style: new TextStyle(fontWeight: FontWeight.w300, fontSize: 10.0),
             ),
             isThreeLine: true,
             dense: true,
@@ -125,11 +143,10 @@ Widget _toggleButton(BuildContext context){
           ),
           flex: 3,
         ),
-
         Expanded(
           child: GestureDetector(
             child: Icon(Icons.account_circle, color: Colors.blue),
-            onTap: (){
+            onTap: () {
               Navigator.push(context, SlideRightRoute(page: AnimationPart()));
             },
           ),
@@ -148,7 +165,8 @@ Column _buildListColumn(Color colors) {
       Container(
         padding: const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 5.0),
         alignment: Alignment.topLeft,
-        child: Text('Rel. to Historical Seismicity', style: TextStyle(color: Colors.grey[500], fontSize:14.0)),
+        child: Text('Rel. to Historical Seismicity',
+            style: TextStyle(color: Colors.grey[500], fontSize: 14.0)),
       ),
       Container(
         color: Colors.grey[350],
@@ -168,11 +186,11 @@ Column _buildListColumn(Color colors) {
   );
 }
 
-List<Marker> _getMarkerList(LatLng point1, LatLng point2){
-  if(point1 == null){
+List<Marker> _getMarkerList(LatLng point1, LatLng point2) {
+  if (point1 == null) {
     point1 = LatLng(51.5, -0.09);
   }
-  if(point2 == null){
+  if (point2 == null) {
     point2 = LatLng(48.8566, 2.3522);
   }
 
@@ -181,16 +199,12 @@ List<Marker> _getMarkerList(LatLng point1, LatLng point2){
         width: 80.0,
         height: 80.0,
         point: point1,
-        builder: (context) => Container(child: Icon(Icons.add_location))
-    ),
+        builder: (context) => Container(child: Icon(Icons.add_location))),
     Marker(
         width: 80.0,
         height: 80.0,
         point: point2,
-        builder: (context) => Container(child: Icon(Icons.add_location))
-    )
+        builder: (context) => Container(child: Icon(Icons.add_location)))
   ];
   return markers;
 }
-
-
