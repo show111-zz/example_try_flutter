@@ -57,9 +57,9 @@ class _KmlGroundOverlayerPageState extends State<KmlGroundOverlayerPage> {
               ),
             ),
             FloatingActionButton(child: Text('Overlayers'),onPressed: ()async{
-             OverlayImage overlayImageinit = await initOverlayerImage();
+             OverlayImage overlayImageInit = await initOverlayerImage();
              setState(() {
-                overlayImage = overlayImageinit;
+                overlayImage = overlayImageInit;
              });
              mapController.move(bounds.northEast, 10.0);
             },)
