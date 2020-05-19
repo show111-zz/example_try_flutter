@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/kml/kml_groud_overlayers_page.dart';
+import 'package:flutter_app/kml/kml_polygon_page.dart';
 import 'package:flutter_app/kml/kml_placemarks_page.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong/latlong.dart';
 
 import 'animation/animation_part.dart';
+import 'kml/kml_overlayers_page.dart';
 import 'util/slide_left_route.dart';
 
 class DetailTwoPage extends StatelessWidget {
@@ -92,15 +93,20 @@ Widget _titleSection(BuildContext context) {
           'Method of Event Detection: ',
           style: TextStyle(color: Colors.grey[500], fontSize: 12.0, height: 2),
         ), onTap: (){
-          Navigator.push(context, SlideRightRoute(page: KmlGoundOverlayersPage()));
+          Navigator.push(context, SlideRightRoute(page: KmlPolygonPage()));
         },),
         Text(
           'Method of Event Detection: Auto, Real ',
           style: TextStyle(color: Colors.grey[500], fontSize: 12.0, height: 2),
         ),
-        Text(
-          'Analysis Type: AI Analysis',
-          style: TextStyle(color: Colors.grey[500], fontSize: 12.0, height: 2),
+        GestureDetector(
+          child: Text(
+            'Analysis Type: AI Analysis',
+            style: TextStyle(color: Colors.grey[500], fontSize: 12.0, height: 2),
+          ),
+          onTap: (){
+            Navigator.push(context, SlideRightRoute(page: KmlGroundOverlayerPage()));
+          },
         ),
       ],
     ),
