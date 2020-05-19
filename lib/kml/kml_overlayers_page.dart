@@ -91,7 +91,6 @@ class _KmlGroundOverlayerPageState extends State<KmlGroundOverlayerPage> {
         Iterable<XmlElement> icon = element.findAllElements('Icon');
         icon.forEach((element) {
           Iterable<XmlElement> href = element.findElements('href');
-          print(href.first.text);
           provider = NetworkImage(href.first.text);
         });
       });
